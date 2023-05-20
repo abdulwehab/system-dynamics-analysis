@@ -1,0 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
+
+# Define the transfer function coefficients
+num = [36, 36]
+den = [1, 30, 36]
+
+# Create the transfer function object
+sys = signal.TransferFunction(num, den)
+
+# Impulse response analysis
+t_imp, y_imp = signal.impulse(sys)
+
+# Step response analysis
+t_step, y_step = signal.step(sys)
+
+# Frequency response analysis
+w, mag, phase = signal.bode(sys)
+
+# Stability analysis
+is_stable = np.all(np.real(np.roots(den)) < 0)
+
+# Plot the impulse response
+plt.figure(1)
+plt.plot(t_imp, y_imp)
+plt.xlabel('Time')
+plt.ylabel('Output')
+plt.title('Impulse Response')
+plt.grid(True)
+
+# Plot the step response
+plt.figure(2)
+plt.plot(t_step, y_step)
+plt.xlabel('Time')
+plt.ylabel('Output')
+plt.title('Step Response')
+plt.grid(True)
+
+# Plot the frequency response
+plt.figure(3)
+plt.semilogx(w, mag)
+plt.xlabel('Frequency [rad/s]')
+plt.ylabel('Magnitude [dB]')
+plt.title('Frequency Response')
+plt.grid(True)
+
+# Print stability analysis result
+if is_stable:
+    print("System is stable.")
+else:
+    print("System is unstable.")
+
+plt.show()
